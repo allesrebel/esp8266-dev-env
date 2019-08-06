@@ -40,9 +40,25 @@ RUN   apt-get update && apt-get -y install \
 
 # Grab and install srecord
 WORKDIR /tmp
-COPY xtensa.sh /tmp
-RUN bash xtensa.sh
+ARG IDF_TOOLCHAIN=https://dl.espressif.com/dl/xtensa-lx106-elf-linux64-1.22.0-92-g8facf4c-5.2.0.tar.gz
+RUN wget -P /tmp --progress=bar:force -q --show-progress $IDF_TOOLCHAIN
+RUN tar -xzf /tmp/xtensa-lx106-elf-linux64-1.22.0-92-g8facf4c-5.2.0.tar.gz
 
-COPY env-setup.sh /tmp
-RUN bash env-setup.sh
+# Grab a copy of the SDK (Static)
+ARG IDF_CLONE_BRANCH_OR_TAG=release/v3.2
+ARG IDF_CLONE_URL=https://github.com/espressif/ESP8266_RTOS_SDK.git
+RUN git clone --branch $IDF_CLONE_BRANCH_OR_TAG \
+   --single-branch --progress --quiet \
+   $IDF_CLONE_URL /tmp/ESP8266_RTOS_SDK
+RUN mv ESP8266_RTOS_SDK /opt/ESP8266_RTOS_SDK
 
+# Set up Env Vars
+ENV IDF_PATH /opt/ESP8266_RTOS_SDK/
+ENV PATH "/opt/ESP8266_RTOS_SDK/tools/:${PATH}"
+ENV PATH "/tmp/xtensa-lx106-elf/bin/:${PATH}"
+ENV PATH "/opt/ESP8266_RTOS_SDK/tools/:${PATH}"
+ENV PYTHONPATH "/opt/ESP8266_RTOS_SDK/tools/"
+
+WORKDIR /opt/project
+#By default build the project
+CMD ["idf.py", "build"]
