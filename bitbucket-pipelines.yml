@@ -1,0 +1,17 @@
+pipelines:
+  default:
+    - step:
+        name: Build Docker Image
+        services:
+          - docker
+        script:
+          - docker build -t $IMAGE_NAME .
+    - step:
+        name: Test Docker Image
+        script:
+          - echo "Maybe write a self test into repo w/ examples from SDK?"
+    - step:
+        name: Depoly Docker Image
+        trigger: manual
+        script:
+          - echo "Maybe someday, check against branch name?"
