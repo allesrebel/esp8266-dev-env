@@ -16,11 +16,10 @@ pull the image with:
 
 # Building the Docker Image
 Make sure Docker is installed, see [Docker Install](https://docs.docker.com/install/)
-In the directory of this repository, issue the `docker build .` command.
+In the directory of this repository, issue the `docker build -t esp8266-builder.` command.
 
-This will build the image for use. Take note of the hash - you'll need
-this to run the image. (`docker images` can be used to see which images
-are available on the host machine)
+This will build the image for use. run `docker images` to make sure you now have an image
+called `esp8266-builder`
 
 # Usage of Container
 
@@ -29,7 +28,7 @@ Running the image can be done with a standard run command with the
 project to build with the `-v` command. The container expects the
 project to be mounted to `/opt/project` directory. For example:
 
-* `docker run -v (Path to project):/opt/project (IMAGE/HASH)`
+* `docker run -v (Path to project):/opt/project esp8266-builder`
 
 ## Flashing a particular project
 Utilize the command specified at the build with a local copy of
