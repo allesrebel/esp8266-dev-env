@@ -52,6 +52,7 @@ RUN git clone --branch $IDF_CLONE_BRANCH_OR_TAG \
    $IDF_CLONE_URL /tmp/ESP8266_RTOS_SDK
 RUN mv ESP8266_RTOS_SDK /opt/ESP8266_RTOS_SDK
 RUN python -m pip install -r /opt/ESP8266_RTOS_SDK/tools/esp_prov/requirements.txt
+RUN python -m pip install pathlib
 
 # Set up Env Vars
 ENV IDF_PATH /opt/ESP8266_RTOS_SDK/
